@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+option csharp_namespace = "BookManagement.Webapp.Protos";
+
+package auth;
+
+message LoginRequest {
+	string username = 1;
+	string password = 2;
+}
+
+message LoginResponse {
+	string access_token = 1;
+}
+
+message RegisterRequest {
+	string username = 1;
+	string password = 2;
+}
+
+message RegisterResponse {
+	bool success = 1;
+}
+
+
+service GrpcAuth {
+	rpc Login (LoginRequest) returns (LoginResponse);
+	rpc Register (RegisterRequest) returns (RegisterResponse);
+}

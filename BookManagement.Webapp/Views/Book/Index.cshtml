@@ -1,0 +1,99 @@
+﻿@model IEnumerable<BookManagement.Webapp.Models.BookModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Books</h1>
+
+<div class="d-flex gap-4">
+
+    <div class="flex-fill">
+<form asp-action="Index" method="get" class="d-flex">
+    <input name="page" value="1" hidden/>
+    <input class="form-control me-sm-2" type="search" name="search" placeholder="Search" value="@(ViewBag.Search)" />
+            <div class="btn-group me-2" role="group" aria-label="First group">
+    <button class="btn btn-primary my-2 my-sm-0" type="submit" name="search">Search</button >
+    <a class="btn btn-secondary" asp-action="Index" asp-route-page="1" asp-route-search="">Reset</a>
+    </div>
+</form>
+    </div>
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+    {
+        <p>
+            <a class="btn btn-primary" asp-action="Create">Create New</a>
+        </p>
+    }
+</div>
+<table class="table table-hover mt-4">
+    <thead>
+        <tr>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.ISBN)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Author)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th scope="col">
+                @Html.DisplayNameFor(model => model.Press)
+            </th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            <tr class="table-light">
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ISBN)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Press.Name)
+            </td>
+                <td class="d-flex gap-2">
+                
+                @Html.ActionLink("Details", "Details", new {  id=item.Id  })
+                @if(User.Identity.IsAuthenticated && User.IsInRole("Admin")) {
+                    @Html.ActionLink("Edit", "Edit", new {  id=item.Id  }) 
+                    @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                }
+                
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div class="btn-group me-2" role="group" aria-label="First group">
+@if (ViewBag.Page > 1 && ViewBag.TotalPage > 1) {
+    <a  class="btn btn-secondary" asp-action="Index" asp-route-page="@(ViewBag.Page - 1)" asp-route-search="@(ViewBag.Search)">Previous</a>
+}
+@for(int i=1; i <= ViewBag.TotalPage;i++)
+{
+        <a class="btn @(i == ViewBag.Page ? "btn-dark pe-none": "btn-secondary")" asp-action="Index" asp-route-page="@(i)" asp-route-search="@(ViewBag.Search)">@(i)</a>
+}
+
+@if (ViewBag.Page < ViewBag.TotalPage && ViewBag.TotalPage > 1)
+{
+    <a class="btn btn-secondary" asp-action="Index" asp-route-page="@(ViewBag.Page + 1)" asp-route-search="@(ViewBag.Search)">Next</a>
+}
+</div>

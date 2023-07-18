@@ -1,0 +1,13 @@
+﻿{
+  "profiles": {
+    "PRN231_Ass3_TranVuKimAnh": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "http://localhost:5154;https://localhost:7185",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
